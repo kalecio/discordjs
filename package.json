@@ -1,6 +1,6 @@
 {
   "name": "discordjs",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Grupo destinado a criação do bot no Discord para consumir API do Filipe Deschamps de Newsletter",
   "main": "app.js",
   "dependencies": {
@@ -10,6 +10,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +22,9 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/NERV-OpenSource/discordjs/issues"
+  },
+  "engines": {
+    "node": "14.x"
   },
   "homepage": "https://github.com/NERV-OpenSource/discordjs#readme"
 }
