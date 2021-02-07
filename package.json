@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/NERV-OpenSource/discordjs/issues"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "homepage": "https://github.com/NERV-OpenSource/discordjs#readme"
 }
