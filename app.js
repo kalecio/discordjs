@@ -9,7 +9,7 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.queues = new Map();
 
-client.aliases = new Collection();
+client.aliases = new Discord.Collection();
 
 
 client.categories = fs.readdirSync('./commands/');
@@ -34,7 +34,7 @@ fs.readdir('./events/', (err, files) => {
 
 
 client.on("ready", () => {
-  console.log(`Estou conectado como ${bot.user.username}`);
+  console.log(`Estou conectado como ${client.user.username}`);
 });
 
 

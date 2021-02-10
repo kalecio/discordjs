@@ -1,7 +1,7 @@
 const search = require("yt-search");
 const ytdl = require("ytdl-core-discord");
 
-const execute = (bot, msg, args) => {
+const execute = (client, msg, args) => {
   const s = args.join(" ");
   try {
     search(s, (err, result) => {
@@ -9,11 +9,11 @@ const execute = (bot, msg, args) => {
         throw err;
       } else if (result && result.videos.length > 0) {
         const song = result.videos[0];
-        const queue = bot.queues.get(msg.guild.id);
+        const queue = client.queues.get(msg.guild.id);
         if (queue) {
           queue.songs.push(song);
-          bot.queues.set(msg.guild.id, queue);
-        } else playSong(bot, msg, song);
+          client.queues.set(msg.guild.id, queue);
+        } else playSong(client, msg, song);
       } else {
         return msg.reply("Desculpe, não encontrei o que você desejava!");
       }
@@ -23,12 +23,12 @@ const execute = (bot, msg, args) => {
   }
 };
 
-const playSong = async (bot, msg, song) => {
-  let queue = bot.queues.get(msg.member.guild.id);
+const playSong = async (client, msg, song) => {
+  let queue = client.queues.get(msg.member.guild.id);
   if (!song) {
     if (queue) {
       queue.connection.disconnect();
-      return bot.queues.delete(msg.member.guild.id);
+      return client.queues.delete(msg.member.guild.id);
     }
   }
   if (!msg.member.voice.channel) {
@@ -53,9 +53,9 @@ const playSong = async (bot, msg, song) => {
   );
   queue.dispatcher.on("finish", () => {
     queue.songs.shift();
-    playSong(bot, msg, queue.songs[0]);
+    playSong(client, msg, queue.songs[0]);
   });
-  bot.queues.set(msg.member.guild.id, queue);
+  client.queues.set(msg.member.guild.id, queue);
 };
 
 module.exports = {
