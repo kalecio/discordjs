@@ -5,35 +5,37 @@ const path = require("path");
 
 dotenv.config();
 
-const bot = new Discord.Client();
-bot.commands = new Discord.Collection();
-bot.queues = new Map();
+const client = new Discord.Client();
+client.commands = new Discord.Collection();
+client.queues = new Map();
 
-const commandFiles = fs
-  .readdirSync(path.join(__dirname, "/commands"))
-  .filter((filename) => filename.endsWith(".js"));
+client.aliases = new Collection();
 
-for (var filename of commandFiles) {
-  const command = require(`./commands/${filename}`);
-  bot.commands.set(command.name, command);
-}
 
-bot.login(process.env.API_TOKEN);
+client.categories = fs.readdirSync('./commands/');
 
-bot.on("ready", function () {
+['command'].forEach(handler => {
+    require(`./handlers/${handler}`)(client);
+});
+
+
+
+fs.readdir('./events/', (err, files) => {
+  if (err) return console.error;
+  files.forEach(file => {
+      if (!file.endsWith('.js')) return;
+      const evt = require(`./events/${file}`);
+      let evtName = file.split('.')[0];
+      console.log(`Evento carregado: '${evtName}'`);
+      client.on(evtName, evt.bind(null, client));
+  });
+});
+
+
+
+client.on("ready", () => {
   console.log(`Estou conectado como ${bot.user.username}`);
 });
 
-bot.on("message", (msg) => {
-  if (!msg.content.startsWith(process.env.PREFIX) || msg.author.bot) return;
 
-  const args = msg.content.slice(process.env.PREFIX.length).split(" ");
-  const command = args.shift();
-
-  try {
-    bot.commands.get(command).execute(bot, msg, args);
-  } catch (e) {
-    console.error(e);
-    return msg.reply("Ops! Eu ainda não conheço esse comando!");
-  }
-});
+client.login(process.env.API_TOKEN);
