@@ -1,7 +1,8 @@
+
 module.exports = async (client, message) => {
     if (message.author.bot) return;
     
-    const prefix = process.env.PREFIX;
+    const prefix = process.env.BOT_PREFIX;
 
     if (!message.guild) return;
 

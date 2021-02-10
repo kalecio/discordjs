@@ -1,15 +1,15 @@
 const Discord = require("discord.js");
-const dotenv = require("dotenv");
+require('dotenv/config');
 const fs = require("fs");
 const path = require("path");
 
-dotenv.config();
+
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.queues = new Map();
 
-client.aliases = new Collection();
+client.aliases = new Discord.Collection();
 
 
 client.categories = fs.readdirSync('./commands/');
@@ -17,8 +17,6 @@ client.categories = fs.readdirSync('./commands/');
 ['command'].forEach(handler => {
     require(`./handlers/${handler}`)(client);
 });
-
-
 
 fs.readdir('./events/', (err, files) => {
   if (err) return console.error;
@@ -34,8 +32,8 @@ fs.readdir('./events/', (err, files) => {
 
 
 client.on("ready", () => {
-  console.log(`Estou conectado como ${bot.user.username}`);
+  console.log(`Estou conectado como ${client.user.username}`);
 });
 
 
-client.login(process.env.API_TOKEN);
+client.login(process.env.TOKEN);
